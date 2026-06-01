@@ -2,6 +2,25 @@ import streamlit as st
 import sys
 import os
 
+from huggingface_hub import hf_hub_download
+import os
+
+os.makedirs("models", exist_ok=True)
+
+MODEL_FILES = [
+    "best_ensemble.pth",
+    "best_model.pth",
+    "best_model_b3.pth",
+    "best_model_b4.pth"
+]
+
+for model_file in MODEL_FILES:
+    hf_hub_download(
+        repo_id="devsharma0601/verdict-models",
+        filename=model_file,
+        local_dir="models"
+    )
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from database.db_manager import init_db
