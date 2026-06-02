@@ -129,3 +129,14 @@ def get_all_sessions_with_candidates():
     ''', conn)
     conn.close()
     return df
+
+def reset_all_data():
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM emotion_logs")
+    cur.execute("DELETE FROM sessions")
+    cur.execute("DELETE FROM candidates")
+
+    conn.commit()
+    conn.close()

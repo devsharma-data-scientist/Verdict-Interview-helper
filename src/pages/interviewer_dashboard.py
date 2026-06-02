@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from database.db_manager import reset_all_data
 from plotly.subplots import make_subplots
 
 from database.db_manager import get_all_sessions_with_candidates, get_session_logs
@@ -26,6 +27,24 @@ def run_interviewer_dashboard():
 
     st.markdown('<p class="page-title">🎯 Interviewer Dashboard</p>', unsafe_allow_html=True)
     st.markdown("Compare candidates side-by-side, view rankings, and make informed decisions.")
+
+
+    st.divider()
+
+    st.subheader("⚠️ Admin Controls")
+
+    confirm = st.checkbox(
+        "I understand this will permanently delete all records"
+    )
+
+    if confirm:
+        if st.button(
+            "🗑️ RESET EVERYTHING",
+            type="primary"
+        ):
+            reset_all_data()
+            st.success("Database cleared.")
+            st.rerun()
 
     all_sessions = get_all_sessions_with_candidates()
 
