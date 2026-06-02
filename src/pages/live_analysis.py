@@ -197,6 +197,16 @@ def run_live_analysis():
     # ── Main recording loop ───────────────────────────────
     if st.session_state.recording and video_source is not None:
         cap = cv2.VideoCapture(video_source)
+
+        fps = cap.get(cv2.CAP_PROP_FPS)
+
+        if fps <= 0:
+            fps = 30
+
+        frame_interval = int(fps * 0.5)
+
+        frame_count = 0
+
         if not cap.isOpened():
             st.error("❌ Cannot open video source. Check camera/URL.")
             st.session_state.recording = False
@@ -211,6 +221,11 @@ def run_live_analysis():
                 if source_type == "Upload Video":
                     st.info("Video analysis complete.")
                 break
+
+            frame_count += 1
+
+            if frame_count % frame_interval != 0:
+                continue
 
             elapsed = time.time() - start_ts
             gray  = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
