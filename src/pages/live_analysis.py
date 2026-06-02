@@ -84,22 +84,15 @@ def run_live_analysis():
 
     with col_setup:
         st.markdown('<p class="section-title">📷 Camera Source</p>', unsafe_allow_html=True)
-        source_type = st.radio("", ["Webcam", "IP Webcam URL", "Upload Video"],
-                               horizontal=True, label_visibility='collapsed')
-        if source_type == "Webcam":
-            cam_index = st.number_input("Camera Index", 0, 5, 0)
-            video_source = int(cam_index)
-        elif source_type == "IP Webcam URL":
-            video_source = st.text_input("IP Webcam URL", "http://192.168.1.x:4747/video")
+        source_type = "Upload Vedio"
+        uploaded = st.file_uploader("Upload Video", type=['mp4','avi','mov','mkv'])
+        if uploaded:
+            import tempfile, os
+            tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
+            tfile.write(uploaded.read())
+            video_source = tfile.name
         else:
-            uploaded = st.file_uploader("Upload Video", type=['mp4','avi','mov','mkv'])
-            if uploaded:
-                import tempfile, os
-                tfile = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4')
-                tfile.write(uploaded.read())
-                video_source = tfile.name
-            else:
-                video_source = None
+            video_source = None
 
     with col_candidate:
         st.markdown('<p class="section-title">👤 Candidate Setup</p>', unsafe_allow_html=True)
