@@ -110,7 +110,7 @@ def run_live_analysis():
         if selected == "➕ New Candidate":
             new_name = st.text_input("Candidate Name", placeholder="Enter full name")
             new_pos  = st.text_input("Position Applied", placeholder="e.g. ML Engineer")
-            new_email = st.text_input("Email (optional)", placeholder="email@example.com")
+            new_email = st.text_input("Email*", placeholder="email@example.com")
         else:
             row = candidates_df[candidates_df['name'] == selected].iloc[0]
             new_name = selected
@@ -163,6 +163,10 @@ def run_live_analysis():
     if start_btn:
         if not new_name:
             st.warning("Please enter a candidate name.")
+            return
+        
+        if not new_email:
+            st.warning("Please enter email.")
             return
 
         # Create/find candidate
